@@ -16,6 +16,8 @@
 		0A5939C42A84D96E005A1991 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5939C32A84D96E005A1991 /* TitleCollectionViewCell.swift */; };
 		0A5939C72A84DC01005A1991 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5939C62A84DC01005A1991 /* SDWebImage */; };
 		0A5939C92A84DC01005A1991 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5939C82A84DC01005A1991 /* SDWebImageMapKit */; };
+		0A5939CB2A8548B7005A1991 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5939CA2A8548B7005A1991 /* TitleTableViewCell.swift */; };
+		0A5939CD2A8756E9005A1991 /* TitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5939CC2A8756E9005A1991 /* TitleViewModel.swift */; };
 		0A8B1D3F2A7FF7D50043D14C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B1D3E2A7FF7D50043D14C /* SearchViewController.swift */; };
 		0A8B1D412A7FF8090043D14C /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B1D402A7FF8090043D14C /* DownloadsViewController.swift */; };
 		0A9CB8A32A8167D9000CB106 /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CB8A22A8167D9000CB106 /* HeroHeaderUIView.swift */; };
@@ -34,6 +36,8 @@
 		0A533A962A7FF75100645746 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0A533A982A7FF77500645746 /* UpcomingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingViewController.swift; sourceTree = "<group>"; };
 		0A5939C32A84D96E005A1991 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
+		0A5939CA2A8548B7005A1991 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
+		0A5939CC2A8756E9005A1991 /* TitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleViewModel.swift; sourceTree = "<group>"; };
 		0A8B1D3E2A7FF7D50043D14C /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		0A8B1D402A7FF8090043D14C /* DownloadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		0A9CB8A22A8167D9000CB106 /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
@@ -65,6 +69,7 @@
 				0A3B77A72A8001BE0008DF9F /* CollectionVIewTableViewCell.swift */,
 				0A9CB8A22A8167D9000CB106 /* HeroHeaderUIView.swift */,
 				0A5939C32A84D96E005A1991 /* TitleCollectionViewCell.swift */,
+				0A5939CA2A8548B7005A1991 /* TitleTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -72,6 +77,7 @@
 		0A8B1D432A80010F0043D14C /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0A5939CC2A8756E9005A1991 /* TitleViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -223,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A5939CB2A8548B7005A1991 /* TitleTableViewCell.swift in Sources */,
 				0A8B1D3F2A7FF7D50043D14C /* SearchViewController.swift in Sources */,
 				0A5939C42A84D96E005A1991 /* TitleCollectionViewCell.swift in Sources */,
 				0AD974D32A7FF44D00F5E606 /* MainTabBarViewController.swift in Sources */,
@@ -236,6 +243,7 @@
 				0A533A992A7FF77500645746 /* UpcomingViewController.swift in Sources */,
 				0A40E1C92A83EF1000EA088D /* Title.swift in Sources */,
 				0A533A972A7FF75100645746 /* HomeViewController.swift in Sources */,
+				0A5939CD2A8756E9005A1991 /* TitleViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
