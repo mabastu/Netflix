@@ -12,22 +12,36 @@ struct Constants {
     static let baseURL = "https://api.themoviedb.org"
 }
 
-enum APIError {
+enum APIError: Error {
     case failedToGetData
 }
 
 class APICaller {
     static let shared = APICaller()
     
-    func getTrendingMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.baseURL)/3/trending/all/day?api_key=\(Constants.API_KEY)") else { return }
+    func getTrendings(for titles: String, completion: @escaping (Result<[Titles], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.baseURL)/3/trending/\(titles)/day?api_key=\(Constants.API_KEY)") else { return }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             do {
-                let result = try JSONDecoder().decode(TrendingMovies.self, from: data)
+                let result = try JSONDecoder().decode(TrendingTitles.self, from: data)
                 completion(.success(result.results))
             } catch {
-                completion(.failure(error))
+                completion(.failure(APIError.failedToGetData))
+            }
+        }
+        task.resume()
+    }
+    
+    func getData(for titles: String, completion: @escaping (Result<[Titles], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.baseURL)/3/movie/\(titles)?api_key=\(Constants.API_KEY)&language=en-US&page=1") else { return }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let result = try JSONDecoder().decode(TrendingTitles.self, from: data)
+                completion(.success(result.results))
+            } catch {
+                completion(.failure(APIError.failedToGetData))
             }
         }
         task.resume()

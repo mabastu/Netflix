@@ -1,5 +1,5 @@
 //
-//  Movie.swift
+//  Titles.swift
 //  Netflix
 //
 //  Created by Mabast on 2024-08-05.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct TrendingMovies: Codable {
-    let results: [Movie]
+struct TrendingTitles: Codable {
+    let results: [Titles]
 }
 
-struct Movie: Codable {
+struct Titles: Codable {
     let id: Int
     let media_type: String?
     let original_name: String?
