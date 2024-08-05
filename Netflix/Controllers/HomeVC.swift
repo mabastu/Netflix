@@ -9,7 +9,7 @@ import UIKit
 
 class HomeVC: UIViewController {
     
-    let sectionTitles: [String] = ["Trending Movies", "Trending TV", "Upcoming Movies", "Top Rated"]
+    let sectionTitles: [String] = ["Trending Movies", "Popular", "Trending TV", "Upcoming Movies", "Top Rated"]
     
     private let homeFeed: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -28,6 +28,7 @@ class HomeVC: UIViewController {
         
         homeFeed.tableHeaderView = HeroHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         configureNavBar()
+        getTrendingMovies()
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,12 +47,23 @@ class HomeVC: UIViewController {
         navigationController?.navigationBar.tintColor = .white
     }
     
+    private func getTrendingMovies() {
+        APICaller.shared.getTrendingMovies { results in
+            switch results {
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        20
+        return sectionTitles.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +83,17 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         40
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+            guard let header = view as? UITableViewHeaderFooterView else {return}
+            header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+            header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+            header.textLabel?.textColor = .white
+        }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
     }
     
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
