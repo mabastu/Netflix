@@ -17,7 +17,7 @@ class MainTabBarVC: UITabBarController {
         homeVC.tabBarItem.image = UIImage(systemName: "house")
         
         let upcomingVC = UINavigationController(rootViewController: UpcomingVC())
-        upcomingVC.title = "Coming Soon"
+        upcomingVC.title = "Upcoming"
         upcomingVC.tabBarItem.image = UIImage(systemName: "play")
         
         let searchVC = UINavigationController(rootViewController: SearchVC())
