@@ -1,5 +1,5 @@
 //
-//  HomeCllectionViewCell.swift
+//  HomeCollectionViewCell.swift
 //  Netflix
 //
 //  Created by Mabast on 2024-08-03.
@@ -7,11 +7,17 @@
 
 import UIKit
 
-class HomeCllectionViewCell: UITableViewCell {
+protocol HomeCllectionViewCellDelegate: AnyObject {
+    func homeCllectionViewCellDidTap(_ cell: HomeCollectionViewCell, viewModel : TitlePreviewViewModel)
+}
+
+class HomeCollectionViewCell: UITableViewCell {
     
     static let identifier = "HomeCllectionViewCell"
     
     private var titles: [Titles] = [Titles]()
+    
+    weak var delegate: HomeCllectionViewCellDelegate?
                          
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -48,7 +54,7 @@ class HomeCllectionViewCell: UITableViewCell {
     }
 }
 
-extension HomeCllectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension HomeCollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titles.count
     }
@@ -62,5 +68,21 @@ extension HomeCllectionViewCell: UICollectionViewDelegate, UICollectionViewDataS
         }
         cell.configure(with: model)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let titleName = titles[indexPath.row].original_title ?? titles[indexPath.row].original_name else {
+            return
+        }
+        APICaller.shared.getMovieTrailer(with: titleName + " trailer") { result in
+            switch result {
+            case .success(let videoElement):
+                let viewModel = TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: self.titles[indexPath.row].overview ?? "")
+                self.delegate?.homeCllectionViewCellDidTap(self, viewModel: viewModel)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ class HomeVC: UIViewController {
     
     private let homeFeed: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
-        table.register(HomeCllectionViewCell.self, forCellReuseIdentifier: HomeCllectionViewCell.identifier)
+        table.register(HomeCollectionViewCell.self, forCellReuseIdentifier: HomeCollectionViewCell.identifier)
         return table
     }()
     
@@ -67,9 +67,10 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeCllectionViewCell.identifier, for: indexPath) as? HomeCllectionViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeCollectionViewCell.identifier, for: indexPath) as? HomeCollectionViewCell else {
             return UITableViewCell()
         }
+        cell.delegate = self
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
             APICaller.shared.getTrendings(for: "movie") { result in
@@ -148,4 +149,14 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     //
     //        navigationController?.navigationBar.transform = .init(translationX: 0, y: -offset)
     //    }
+}
+
+extension HomeVC: HomeCllectionViewCellDelegate {
+    func homeCllectionViewCellDidTap(_ cell: HomeCollectionViewCell, viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async {
+            let vc = TitlePreviewVC()
+            vc.configure(with: viewModel)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
