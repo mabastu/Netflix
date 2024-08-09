@@ -72,6 +72,11 @@ class HeroHeaderView: UIView {
         heroImage.frame = bounds
     }
     
+    public func configure(with viewModel: TitleViewModel) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(viewModel.posterURL)") else { return }
+        heroImage.sd_setImage(with: url)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
