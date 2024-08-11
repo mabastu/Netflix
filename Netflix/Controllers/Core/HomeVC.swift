@@ -17,7 +17,7 @@ enum Sections: Int {
 
 class HomeVC: UIViewController {
     
-    private var randomTrendingMovies: Titles?
+    private var randomTrendingMovies: Title?
     private var headerView: HeroHeaderView?
     
     let sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
@@ -52,8 +52,9 @@ class HomeVC: UIViewController {
         APICaller.shared.getTrendings(for: "movie") { [weak self] result in
             switch result {
             case .success(let titles):
-                self?.randomTrendingMovies = titles.randomElement()
-                self?.headerView?.configure(with: TitleViewModel(titleName: titles.randomElement()?.original_title ?? "", posterURL: titles.randomElement()?.poster_path ?? ""))
+                let selectedTitle = titles.randomElement()
+                self?.randomTrendingMovies = selectedTitle
+                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -170,10 +171,10 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
 extension HomeVC: HomeCllectionViewCellDelegate {
     func homeCllectionViewCellDidTap(_ cell: HomeCollectionViewCell, viewModel: TitlePreviewViewModel) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             let vc = TitlePreviewVC()
             vc.configure(with: viewModel)
-            self.navigationController?.pushViewController(vc, animated: true)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

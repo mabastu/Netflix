@@ -9,7 +9,7 @@ import UIKit
 
 class SearchVC: UIViewController {
     
-    private var titles: [Titles] = [Titles]()
+    private var titles: [Title] = [Title]()
     
     private let searchTable: UITableView = {
         let table = UITableView()
@@ -80,7 +80,9 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let titleName = titles[indexPath.row].original_title ?? titles[indexPath.row].original_name else {
+        let title = titles[indexPath.row]
+        
+        guard let titleName = title.original_title ?? title.original_name else {
             return
         }
         
@@ -89,7 +91,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             case .success(let videoElement):
                 DispatchQueue.main.async {
                     let vc = TitlePreviewVC()
-                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: self?.titles[indexPath.row].overview ?? ""))
+                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: title.overview ?? ""))
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
                 case .failure(let error):
@@ -120,11 +122,11 @@ extension SearchVC: UISearchResultsUpdating, SearchResultsVCDelegate {
         }
     }
     
-    func SearchResultsVCDidTapItem(_ viewModel: TitlePreviewViewModel) {
-        DispatchQueue.main.async {
+    func searchResultsVCDidTapItem(_ viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async { [weak self] in
             let vc = TitlePreviewVC()
             vc.configure(with: viewModel)
-            self.navigationController?.pushViewController(vc, animated: true)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

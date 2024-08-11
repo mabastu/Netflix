@@ -15,7 +15,7 @@ class HomeCollectionViewCell: UITableViewCell {
     
     static let identifier = "HomeCllectionViewCell"
     
-    private var titles: [Titles] = [Titles]()
+    private var titles: [Title] = [Title]()
     
     weak var delegate: HomeCllectionViewCellDelegate?
                          
@@ -46,10 +46,21 @@ class HomeCollectionViewCell: UITableViewCell {
         collectionView.frame = contentView.bounds
     }
     
-    public func configure(with titles: [Titles]) {
+    public func configure(with titles: [Title]) {
         self.titles = titles
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
+        }
+    }
+    
+    private func downloadTitleAt(indexPath: IndexPath) {
+        DataPersistenceManager.shared.downloadTitleWith(model: titles[indexPath.row]) { result in
+            switch result {
+            case .success():
+                NotificationCenter.default.post(name: NSNotification.Name("Downloaded"), object: nil)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
@@ -75,14 +86,26 @@ extension HomeCollectionViewCell: UICollectionViewDelegate, UICollectionViewData
         guard let titleName = titles[indexPath.row].original_title ?? titles[indexPath.row].original_name else {
             return
         }
-        APICaller.shared.getMovieTrailer(with: titleName + " trailer") { result in
+        APICaller.shared.getMovieTrailer(with: titleName + " trailer") { [weak self] result in
             switch result {
             case .success(let videoElement):
-                let viewModel = TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: self.titles[indexPath.row].overview ?? "")
+                guard let titleOverview = self?.titles[indexPath.row].overview else { return }
+                guard let self = self else { return }
+                let viewModel = TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: titleOverview)
                 self.delegate?.homeCllectionViewCellDidTap(self, viewModel: viewModel)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self ] _ in
+            let downloadAction = UIAction(title: "Download", state: .off) { _ in
+                self?.downloadTitleAt(indexPath: indexPath)
+            }
+            return UIMenu(options: .displayInline, children: [downloadAction])
+        }
+        return config
     }
 }

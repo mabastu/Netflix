@@ -8,12 +8,12 @@
 import UIKit
 
 protocol SearchResultsVCDelegate: AnyObject {
-    func SearchResultsVCDidTapItem(_ viewModel: TitlePreviewViewModel)
+    func searchResultsVCDidTapItem(_ viewModel: TitlePreviewViewModel)
 }
 
 class SearchResultsVC: UIViewController {
     
-    public var titles: [Titles] = [Titles]()
+    public var titles: [Title] = [Title]()
     
     public weak var delegate: SearchResultsVCDelegate?
     
@@ -62,7 +62,7 @@ extension SearchResultsVC: UICollectionViewDataSource, UICollectionViewDelegate 
         APICaller.shared.getMovieTrailer(with: titleName) { [weak self] result in
             switch result {
             case .success(let videoElement):
-                self?.delegate?.SearchResultsVCDidTapItem(TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: self?.titles[indexPath.row].overview ?? ""))
+                self?.delegate?.searchResultsVCDidTapItem(TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: self?.titles[indexPath.row].overview ?? ""))
                 case .failure(let error):
                 print(error.localizedDescription)
             }
